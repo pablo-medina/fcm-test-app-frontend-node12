@@ -1,0 +1,83 @@
+<div class="app-container" [@fadeInOut]="'fadeIn'">
+    <div class="app-window">
+        <div class="title">
+            Ejemplo de uso de Firebase
+        </div>
+        <div class="content">
+            <ng-container *ngIf="notSupported">
+                <div>No se detectaron Service Workers.</div>
+            </ng-container>
+            <ng-container *ngIf="loading">
+                <!-- <div>Cargando...</div><app-spinner></app-spinner> -->
+            </ng-container>
+            <form class="message-sender" [formGroup]="frmEnviarMensaje" (ngSubmit)="enviarMensaje()">
+                <ul class="fields">
+                    <li class="row">
+                        <h5>Título:</h5>
+                        <input type="text" formControlName="titulo" />
+                    </li>
+                    <li class="row">
+                        <h5>Mensaje:</h5>
+                        <input type="text" formControlName="texto" />
+                    </li>
+                    <li class="row">
+                        <h5>URL Imagen:</h5>
+                        <input type="text" formControlName="imagen" />
+                    </li>
+                    <li class="row">
+                        <h5>Demorar envío: (milisegundos)</h5>
+                        <input type="number" formControlName="delay" />
+                    </li>
+                    <ng-container *ngIf="!permitirNotificaciones">
+                        <div class="buttons">
+                            <button class="app-button" type="button" (click)="PermitirNotificaciones()">Permitir</button>
+                        </div>
+                        <li class="row">
+                            Debe habilitar las notificaciones desde el navegador para poder enviar mensajes.
+                        </li>
+                    </ng-container>
+                </ul>
+                <div class="buttons">
+                    <button class="app-button" type="submit" [disabled]="!permitirNotificaciones">Enviar</button>
+                </div>
+            </form>
+            <div class="options-section flex-column">
+                <ng-container [ngSwitch]="estadoToken">
+                    <div class="loading-token" *ngSwitchCase="TokenStatus.Loading">
+                        <h5>Obteniendo Token...</h5>
+                        <div class="app-spinner">
+                            <div class="circle"></div>
+                        </div>
+                    </div>
+                    <div class="error-token" *ngSwitchCase="TokenStatus.Unavailable">
+                        No se pudo obtener el token.
+                    </div>
+                    <ul class="fields" *ngSwitchCase="TokenStatus.Available">
+                        <div class="app-checkbox-container">
+                            <input id="chkCustomNotifications" type="checkbox" [(ngModel)]="usarNotificacionesPersonalizadas" (change)="updateConfigNotificaciones()"><label for="chkCustomNotifications">Usar notificaciones personalizadas</label>
+                        </div>
+                        <li class="row token-row">
+                            <h5>Token</h5>
+                            <div class="token-data">
+                                <div class="text-container">
+                                    <p>{{messageToken}}</p>
+                                </div>
+                                <button class="app-button" type="button" (click)="copiarToken()">Copiar</button>
+                            </div>
+                        </li>
+                    </ul>
+                </ng-container>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="reset-message">
+    <button class="app-link" (click)="reiniciarServiceWorkers()">Reiniciar Service Workers</button>
+</div>
+
+<ng-container *ngIf="mostrarNotificacion">
+    <app-notification [@fadeInOut]="estadoAnimacion" (click)="cerrarNotificacion()" title="{{tituloNotificacion}}" message="{{mensajeNotificacion}}" imageUrl="{{imagenNotificacion}}"></app-notification>
+</ng-container>
+
+<router-outlet></router-outlet>

@@ -1,0 +1,9 @@
+<div class="app-notification">
+    <div class="image-container" *ngIf="imageUrl">
+        <img [src]="imageUrl" alt="Imagen">
+    </div>
+    <div class="content">
+        <h1 *ngIf="title">{{title}}</h1>
+        <p *ngIf="message">{{message}}</p>
+    </div>
+</div>

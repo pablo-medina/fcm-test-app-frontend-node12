@@ -1,0 +1,18 @@
+.app-spinner
+  position: relative
+  display: inline-block
+  box-sizing: border-box
+  padding: 0.5rem
+
+  .circle
+    box-sizing: border-box
+    width: 1.75rem
+    height: 1.75rem
+    border-radius: 100%
+    border: 0.25rem solid rgba(255, 255, 255, 0.2)
+    border-top-color: #2020a0
+    animation: spin 1s infinite linear
+
+  @keyframes spin
+    100%
+      transform: rotate(360deg)

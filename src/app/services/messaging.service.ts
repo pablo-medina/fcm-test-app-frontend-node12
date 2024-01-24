@@ -6,7 +6,8 @@ import { FirebaseConfig, Notificacion, TokenStatus } from '../models/messaging.m
 import { getMessaging, getToken, onMessage } from 'firebase/messaging';
 import { initializeApp } from 'firebase/app';
 import { IMensaje } from '../models/mensaje.model';
-import { error } from 'console';
+
+const basePath = environment.basePath;
 
 @Injectable({
   providedIn: 'root'
@@ -20,14 +21,14 @@ export class MessagingService {
   private _serviceWorkerReady$ = new BehaviorSubject<boolean>(false);
   private _notificacion$ = new Subject<Notificacion>();
   private _registration: ServiceWorkerRegistration | undefined;
-  private _tokenStatus = new BehaviorSubject<TokenStatus>(TokenStatus.Off);
+  private _tokenStatus = new BehaviorSubject<TokenStatus>(TokenStatus.Off);  
 
   constructor(private http: HttpClient) {
   }
 
   public inicializar() {
     if (navigator.serviceWorker) {
-      navigator.serviceWorker.register('/firebase-messaging-sw.js', { scope: "./fcm-test-app/" })
+      navigator.serviceWorker.register(`${basePath}firebase-messaging-sw.js`, { scope: basePath })
         .then(registration => {
           this._registration = registration;
           console.log('[APP] ServiceWorkerRegistration:', registration, 'Scope:', registration.scope);

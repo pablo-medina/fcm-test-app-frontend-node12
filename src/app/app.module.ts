@@ -8,6 +8,10 @@ import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NotificationComponent } from './components/notification/notification.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { environment } from 'src/environments/environment';
+
+const basePath = environment.basePath;
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -20,9 +24,9 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
-    ServiceWorkerModule.register('/firebase-messaging-sw.js', {
+    ServiceWorkerModule.register(`${basePath}firebase-messaging-sw.js`, {
       enabled: true,
-      scope: "./fcm-test-app/",
+      scope: basePath,
       // Register the ServiceWorker as soon as the app is stable
       // or after 30 seconds (whichever comes first).
       registrationStrategy: 'registerWhenStable:300'

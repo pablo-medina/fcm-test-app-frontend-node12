@@ -8,7 +8,7 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "dev": "ng build --configuration development && http-server dist/fcm-test-app -c-1 -p 20000",
+    "dev": "ng build --configuration development && http-server dist -c-1 -p 20000",
     "deploy": "ng deploy --base-href=/fcm-test-app-frontend-node12/"
   },
   "private": true,

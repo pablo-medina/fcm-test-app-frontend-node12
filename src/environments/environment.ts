@@ -4,7 +4,8 @@
 
 export const environment = {
   apiUrl: 'http://localhost:10001',
-  appId: 'fcm-test-client'
+  appId: 'fcm-test-client',
+  basePath: '/fcm-test-app/'
 }
 
 /*

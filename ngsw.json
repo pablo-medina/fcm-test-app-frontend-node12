@@ -1,6 +1,6 @@
 {
   "configVersion": 1,
-  "timestamp": 1706200683027,
+  "timestamp": 1706203824266,
   "index": "/fcm-test-app-frontend-node12/index.html",
   "assetGroups": [
     {
@@ -53,7 +53,7 @@
     "/fcm-test-app-frontend-node12/assets/icons/icon-72x72.png": "c457e56089a36952cd67156f9996bc4ce54a5ed9",
     "/fcm-test-app-frontend-node12/assets/icons/icon-96x96.png": "3914125a4b445bf111c5627875fc190f560daa41",
     "/fcm-test-app-frontend-node12/favicon.ico": "22f6a4a3bcaafafb0254e0f2fa4ceb89e505e8b2",
-    "/fcm-test-app-frontend-node12/firebase-messaging-sw.js": "9ff77d20adb5c10ca9818a65bae0d043219117b8",
+    "/fcm-test-app-frontend-node12/firebase-messaging-sw.js": "bdf061acde1f53b725b2d17403ea22c60e15126d",
     "/fcm-test-app-frontend-node12/index.html": "062096aab6fc8e9ece1d3e10c373de24cb35a9a6",
     "/fcm-test-app-frontend-node12/main.2a2dd171b08230f2.js": "7f0c3c446aca989eef35892fbfe1a1e20f7604ab",
     "/fcm-test-app-frontend-node12/manifest.webmanifest": "a0da93152f242f27b5841a09aea9a885985c2c30",

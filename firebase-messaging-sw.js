@@ -25,24 +25,26 @@ self.addEventListener('activate', (event) => {
 });
 
 self.addEventListener('push', (event) => {
-    const data = event.data.json();
+    if (self.registration) {
+        const data = event.data.json();
 
-    if (data && data.notification) {
-        console.log("[SW] Mensaje recibido (PUSH): ", payload);
-        const notification = data.notification;
-        const options = {
-            body: notification.body,
-            icon: notification.icon
-        };
+        if (data && data.notification) {
+            console.log("[SW] Mensaje recibido (PUSH): ", event);
+            const notification = data.notification;
+            const options = {
+                body: notification.body,
+                icon: notification.icon
+            };
 
-        event.waitUntil(
-            self.registration.showNotification(notification.title + ' [PUSH]', options)
-        );
+            event.waitUntil(
+                self.registration.showNotification(notification.title + ' [PUSH]', options)
+            );
+        }
     }
-})
+});
 
 const agregarNotificacionesPersonalizadas = messaging => {
-    if (messaging) {        
+    if (messaging) {
         messaging.onBackgroundMessage((messaging, payload) => {
             if (payload.data && payload.data.notification) {
                 console.log("[SW] Mensaje recibido: ", payload);

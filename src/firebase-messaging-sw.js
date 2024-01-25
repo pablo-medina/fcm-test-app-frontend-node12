@@ -23,19 +23,6 @@ self.addEventListener('activate', (event) => {
     event.waitUntil(self.clients.claim());
 });
 
-self.addEventListener('push', (event) => {
-    const data = event.data.json(); // Convierte los datos de la notificación en formato JSON
-
-    const options = {
-        body: data.notification.body,
-        icon: data.notification.icon
-    };
-
-    event.waitUntil(
-        self.registration.showNotification(data.notification.title, options)
-    );
-})
-
 const agregarNotificacionesPersonalizadas = messaging => {
     if (messaging) {
         messaging.onBackgroundMessage(function (payload) {

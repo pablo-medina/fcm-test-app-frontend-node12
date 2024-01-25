@@ -12,7 +12,7 @@ self.addEventListener('message', (event) => {
         firebase.initializeApp(firebaseConfig);
         const messaging = firebase.messaging();
         if (USAR_NOTIFICACIONES_PERSONALIZADAS) {
-          agregarNotificacionesPersonalizadas(messaging);
+            agregarNotificacionesPersonalizadas(messaging);
         }
         console.log('[SW] Firebase inicializado correctamente.');
     }
@@ -23,9 +23,22 @@ self.addEventListener('activate', (event) => {
     event.waitUntil(self.clients.claim());
 });
 
+self.addEventListener('push', (event) => {
+    const data = event.data.json(); // Convierte los datos de la notificación en formato JSON
+
+    const options = {
+        body: data.notification.body,
+        icon: data.notification.icon
+    };
+
+    event.waitUntil(
+        self.registration.showNotification(data.notification.title, options)
+    );
+})
+
 const agregarNotificacionesPersonalizadas = messaging => {
     if (messaging) {
-        messaging.onBackgroundMessage(function(payload) {
+        messaging.onBackgroundMessage(function (payload) {
             console.log("[SW] Mensaje recibido: ", payload);
 
             const notificationTitle = payload.notification.title;
@@ -39,21 +52,21 @@ const agregarNotificacionesPersonalizadas = messaging => {
     }
 }
 
-self.onnotificationclick = (event) =>{
-    
-    const linkToApp=event.notification.data.FCM_MSG.notification.click_action;  
-    console.log('on notif click', event.notification.tag, linkToApp  )
+self.onnotificationclick = (event) => {
+
+    const linkToApp = event.notification.data.FCM_MSG.notification.click_action;
+    console.log('on notif click', event.notification.tag, linkToApp)
     event.waitUntil(
         clients.matchAll({
             type: "window",
         })
-        .then((clientList)=>{
-            console.log('clientList',clientList )
-            for (const client of clientList){
-                console.log('clientList',client, clients )
-                if(client.url === linkToApp && "focus" in client) return client.focus();
-            } 
-            if(clients.openWindow)return clients.openWindow(linkToApp);            
-        })
+            .then((clientList) => {
+                console.log('clientList', clientList)
+                for (const client of clientList) {
+                    console.log('clientList', client, clients)
+                    if (client.url === linkToApp && "focus" in client) return client.focus();
+                }
+                if (clients.openWindow) return clients.openWindow(linkToApp);
+            })
     )
 }

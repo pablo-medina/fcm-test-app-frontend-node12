@@ -1,7 +1,7 @@
 importScripts('https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js');
 importScripts('https://www.gstatic.com/firebasejs/9.0.0/firebase-messaging-compat.js');
 
-const USAR_NOTIFICACIONES_PERSONALIZADAS = false; // Deshabilitado para evitar notificaciones duplicadas
+const USAR_NOTIFICACIONES_PERSONALIZADAS = true;
 
 self.addEventListener('message', (event) => {
     const message = event.data;
@@ -11,6 +11,7 @@ self.addEventListener('message', (event) => {
         console.log('[SW] Inicializando Firebase...');
         firebase.initializeApp(firebaseConfig);
         const messaging = firebase.messaging();
+
         if (USAR_NOTIFICACIONES_PERSONALIZADAS) {
             agregarNotificacionesPersonalizadas(messaging);
         }
@@ -23,17 +24,36 @@ self.addEventListener('activate', (event) => {
     event.waitUntil(self.clients.claim());
 });
 
+self.addEventListener('push', (event) => {
+    const data = event.data.json();
+
+    if (data && data.notification) {
+        console.log("[SW] Mensaje recibido (PUSH): ", payload);
+        const notification = data.notification;
+        const options = {
+            body: notification.body,
+            icon: notification.icon
+        };
+
+        event.waitUntil(
+            self.registration.showNotification(notification.title + ' [PUSH]', options)
+        );
+    }
+})
+
 const agregarNotificacionesPersonalizadas = messaging => {
-    if (messaging) {
-        messaging.onBackgroundMessage(function (payload) {
-            console.log("[SW] Mensaje recibido: ", payload);
+    if (messaging) {        
+        messaging.onBackgroundMessage((messaging, payload) => {
+            if (payload.data && payload.data.notification) {
+                console.log("[SW] Mensaje recibido: ", payload);
+                const notification = payload.data.notification;
+                const notificationOptions = {
+                    body: notification.body,
+                    icon: notification.image
+                };
 
-            const notificationTitle = payload.notification.title;
-            const notificationOptions = {
-                body: payload.notification.body
-            };
-
-            self.registration.showNotification(notificationTitle, notificationOptions);
+                self.registration.showNotification(notification.title, notificationOptions);
+            }
         });
         console.debug('[SW] Se agregaron las notificaciones personalizadas.');
     }
